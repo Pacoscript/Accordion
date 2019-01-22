@@ -30,9 +30,30 @@ class Accordion {
     })
   }
 
+  addAccordionOption() {
+    const name = document.createElement('dt')
+    const descrip = document.createElement('dd')
+    this.getAjaxOption()
+    name.textContent = 'Ajax Content'
+    name.classList = 'Accordion-name'
+    descrip.innerHTML = '<p>Description</p>'
+    descrip.classList ='Accordion-descrip'
+    this.dl.appendChild(name)
+    this.dl.appendChild(descrip)
+  }
+
+  getAjaxOption() {
+    return fetch('api.json')
+      .then(res => res.json())
+      .then(res => res.option)
+      .catch(err => console.error(err))
+  }
+
   init() {
+    this.addAccordionOption()
     this.assign()
     this.handleToggleClass()
+    
   }
 }
 
