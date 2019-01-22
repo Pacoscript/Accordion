@@ -1,9 +1,10 @@
-import "./style.css";
+import "./style.sass";
 
 class Accordion {
 
-  constructor(dl) {
+  constructor(dl, ajaxCall) {
     this.dl = dl
+    this.addAccordionOption(ajaxCall)
     this.dtElements = document.querySelectorAll('dt')
     this.ddElements = document.querySelectorAll('dd')
   }
@@ -30,9 +31,30 @@ class Accordion {
     })
   }
 
+  addAccordionOption(ajaxCall) {
+    const name = document.createElement('dt')
+    const descrip = document.createElement('dd')
+    this.getAjaxOption(ajaxCall)
+      .then(res => {
+        name.textContent = `${res.results[0].title}`
+        descrip.innerHTML = `<p>${res.results[0].overview}</p>`
+    })
+    name.classList = 'Accordion-name'
+    descrip.classList ='Accordion-descrip'
+    this.dl.appendChild(name)
+    this.dl.appendChild(descrip)
+  }
+
+  getAjaxOption(ajaxCall) {
+    return fetch(ajaxCall)
+      .then(res => res.json())
+      .catch(err => console.error(err))
+  }
+
   init() {
     this.assign()
     this.handleToggleClass()
+    
   }
 }
 
